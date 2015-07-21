@@ -30,6 +30,26 @@ function createShape(type, size, x, z){
 		myMesh = new THREE.Mesh(new THREE.CylinderGeometry( 10, size, 100, 20, 4 ),material);
 		myMesh.floorOffset = size;
 		break;
+		case "octahedron":
+		myMesh = new THREE.Mesh(new THREE.OctahedronGeometry( size, 0 ),material);
+		myMesh.floorOffset = size;
+		break;
+		case "torus":
+		myMesh = new THREE.Mesh(new THREE.TorusGeometry( size, size, 8, 4 ),material);
+		myMesh.floorOffset = size*2;
+		break;
+		case "tetrahedron":
+		myMesh = new THREE.Mesh(new THREE.TetrahedronGeometry( size, 0 ),material);
+		myMesh.floorOffset = size/2;
+		break;
+		case "prism":
+		myMesh = new THREE.Mesh(new THREE.CylinderGeometry( size, size, size, 6, 4 ),material);
+		myMesh.floorOffset = size/2;
+		break;
+		case "icosahedron":
+		myMesh = new THREE.Mesh(new THREE.IcosahedronGeometry( size,1 ),material);
+		myMesh.floorOffset = size;
+		break;
 		default:
 		console.log("Shape not defined, generation aborded");
 		return;
@@ -54,7 +74,7 @@ function createShape(type, size, x, z){
 }
 
 
-//Define extreme coordinates of the object
+//Define extreme coordinates of the object, its lowest x,y,z & highest x,y,z
 function setLimit(mesh){
 	mesh.minX = mesh.position.x - mesh.floorOffset * mesh.scale.x;
 	mesh.maxX = mesh.position.x + mesh.floorOffset * mesh.scale.x;
@@ -71,7 +91,7 @@ function reajustPosition(mesh){
         if(INTERSECTED.minY < 0){ //Object moved under the plane
         	INTERSECTED.position.y = INTERSECTED.floorOffset*INTERSECTED.scale.y;
         }
-        if(INTERSECTED.maxX > 500){ //Object moved  too far in x
+        /*if(INTERSECTED.maxX > 500){ //Object moved  too far in x
         	INTERSECTED.position.x = -INTERSECTED.floorOffset*INTERSECTED.scale.x+500;
         }
         if(INTERSECTED.minX < -500){ //Object moved  too far in x
@@ -82,7 +102,7 @@ function reajustPosition(mesh){
         }
         if(INTERSECTED.minZ < -500){ //Object moved  too far in z
         	INTERSECTED.position.z = +INTERSECTED.floorOffset*INTERSECTED.scale.z-500;
-        }
+        }*/
         plane.position.copy(INTERSECTED.position);
         SELECTED = null;
     }
@@ -90,3 +110,27 @@ function reajustPosition(mesh){
 }
 
 var de2ra = function(degree) { return degree*(Math.PI/180);};
+
+function translate(dx, dy, dz){
+	currentMesh.position.x	+= dx * 50;
+	currentMesh.position.y	+= dy * 50;
+	currentMesh.position.z	+= dz * 50;
+}
+
+function render() 
+{
+	controls.update();
+	renderer.render( scene, camera );
+}
+
+function onWindowResize() {
+
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function animate() {
+    requestAnimationFrame( animate );
+	render();	
+}

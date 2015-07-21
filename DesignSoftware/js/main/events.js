@@ -1,4 +1,3 @@
-
 function onDocumentMouseMove(event) {
 
     event.preventDefault();
@@ -25,7 +24,7 @@ function onDocumentMouseMove(event) {
             INTERSECTED = intersects[0].object;
             INTERSECTED.currentHex = INTERSECTED.material.color.getHex();
             plane.position.copy(INTERSECTED.position);
-            plane.lookAt(camera.position);
+            //plane.lookAt(camera.position);
 
         }
 
@@ -109,4 +108,26 @@ function onDocumentMouseUp(event) {
     
     container.style.cursor = 'auto';
 
+}
+
+function onDocumentKeyDown(event){
+	switch( event.keyCode ) {
+
+		/* Translations */
+		case 107: translate(0,1,0);break; //stands for '+'  y+=1
+		case 109: translate(0,-1,0);break; //stands for '-' y-=1
+		case 100: translate(-1,0,0);break; //stands for '4' x-=1
+		case 102: translate(1,0,0);break; //stands for '6'  x+=1
+		case 104: translate(0,0,-1);break; //stands for '8' z-=1
+		case 98: translate(0,0,1);break; //stands for '2'   z+=1
+
+		case 101: resetCube();break; //stands for '2'
+
+		/* Rotations */
+		case 103: currentMesh.rotation.y += (de2ra(45));break; //rotation on y axis
+		case 105: currentMesh.rotation.y -= (de2ra(45));break; //reverse rotation on y axis
+		case 97: currentMesh.rotation.z += (de2ra(45));break; //rotation on y axis
+		case 99: currentMesh.rotation.z -= (de2ra(45));break; //reverse rotation on y axis	
+
+	}
 }

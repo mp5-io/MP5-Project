@@ -1,26 +1,25 @@
-function animate() {
-    requestAnimationFrame( animate );
-	render();	
-	keyboardManage();//keyboard is a private word
-}
+
 
 function keyboardManage(){
 	var delta = clock.getDelta(); // seconds.
-	var moveDistance = delta*200; // 200 pixels per second
+	var moveDistance = 50; // 200 pixels per second
 	var rotateAngle = Math.PI / 4 * delta;   // pi/2 radians (90 degrees) per second
 
 	// local coordinates
 	// local transformations
 	// move forwards/backwards/left/right
-	if ( keyboard.pressed("Z") ){
-		currentMesh.translateZ( -moveDistance );
-	}
+	if ( keyboard.pressed("Z") )
+		currentMesh.position.z -= moveDistance;
 	if ( keyboard.pressed("S") )
-		currentMesh.translateZ(  moveDistance );
+		currentMesh.position.z += moveDistance;
 	if ( keyboard.pressed("Q"))
-		currentMesh.translateX( -moveDistance );
+		currentMesh.position.x -= moveDistance;
 	if ( keyboard.pressed("D") )
-		currentMesh.translateX(  moveDistance );	
+		currentMesh.position.x += moveDistance;
+	if ( keyboard.pressed("1"))
+		currentMesh.position.y += moveDistance;
+	if ( keyboard.pressed("2") )
+		currentMesh.position.y -= moveDistance;
 
 	// rotate left/right/up/down
 	var rotation_matrix = new THREE.Matrix4().identity();
@@ -56,17 +55,3 @@ function keyboardManage(){
 
 
 
-function render() 
-{
-	controls.update();
-	renderer.render( scene, camera );
-}
-
-function onWindowResize() {
-
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
-}

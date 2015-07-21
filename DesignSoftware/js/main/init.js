@@ -15,7 +15,6 @@ var mouse = new THREE.Vector2(),
     offset = new THREE.Vector3(),
     INTERSECTED, SELECTED;
 
-var keyboard = new THREEx.KeyboardState();
 var clock = new THREE.Clock();
 
 // Basic wireframe materials.
@@ -90,13 +89,13 @@ function init() {
 		workingZone.position.y =-1;
 	scene.add(workingZone);
 
-	createShape("cube",50,0,0);
+	createShape("cube",50,25,25);
 	createShape("sphere",50,100,200);
 	createShape("cylinder",50,-100,200);
 	currentMesh = objects[0];
 	
     plane = new THREE.Mesh(
-        new THREE.PlaneBufferGeometry(2000, 2000, 8, 8),
+        new THREE.PlaneBufferGeometry(5000, 5000),
         new THREE.MeshBasicMaterial({
             color: 0x000000,
             opacity: 0.25,
@@ -141,6 +140,8 @@ function init() {
     renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
     renderer.domElement.addEventListener('mousedown', onDocumentMouseDown, false);
     renderer.domElement.addEventListener('mouseup', onDocumentMouseUp, false);
+    document.addEventListener('keydown', onDocumentKeyDown, false );
+
     console.log("mouseListeners ok");
     
     window.addEventListener('resize', onWindowResize, false);

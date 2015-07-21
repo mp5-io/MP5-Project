@@ -34,16 +34,16 @@ function initGui(){
 	var f1 = gui.addFolder('Scale');
 	//We fix a maximum scale : currentSize*scale <= sizeFloor
 	limitScale = GRIDSIZE/currentMesh.Size;
-	f1.add(parameters, 'scaleX', 1, limitScale,1).onChange( function(value) { 
+	f1.add(parameters, 'scaleX', 1, 10,1).onChange( function(value) { 
        currentMesh.scale.x = value;
     });
-    f1.add(parameters, 'scaleY', 1, limitScale,1).onChange( function(value) {
+    f1.add(parameters, 'scaleY', 1, 10,1).onChange( function(value) {
        currentMesh.scale.y = value;
     });
-    f1.add(parameters, 'scaleZ', 1, limitScale,1).onChange( function(value) {
+    f1.add(parameters, 'scaleZ', 1, 10,1).onChange( function(value) {
        currentMesh.scale.z = value;
     });
-    f1.add(parameters, 'scaleUniform', 1, limitScale,1).onChange( function(value) {
+    f1.add(parameters, 'scaleUniform', 1, 10,1).onChange( function(value) {
        currentMesh.scale.z = value;
        currentMesh.scale.y = value;
        currentMesh.scale.x = value;
@@ -93,7 +93,6 @@ function initGui(){
 
 
 function initGuiShape(){
-	gui2 = new dat.GUI();
 	
 	gui2.domElement.style.position = 'absolute';
 	gui2.domElement.style.left='0px';
@@ -152,11 +151,10 @@ function updateCube(currentMesh){
 }
 
 
-function resetCube()
-	{
-	parameters.x = 0+INTERSECTED.Size*INTERSECTED.scale.x;
-	parameters.y = 30+INTERSECTED.Size*INTERSECTED.scale.y;
-	parameters.z = 0+INTERSECTED.Size*INTERSECTED.scale.z;
+function resetCube(){
+	parameters.x = 0+INTERSECTED.floorOffset*INTERSECTED.scale.x;
+	parameters.y = 30+INTERSECTED.floorOffset*INTERSECTED.scale.y;
+	parameters.z = 0+INTERSECTED.floorOffset*INTERSECTED.scale.z;
 	parameters.scaleX = 1;
 	parameters.scaleY = 1;
 	parameters.scaleZ = 1;
@@ -169,5 +167,7 @@ function resetCube()
 	parameters.axes = true;
 	parameters.material = "Phong";
 	parameters.wireframe = false;
+	currentMesh.position.set(0,0,0);
+	currentMesh.rotation.set(0,0,0);
 	updateCube(currentMesh);
-	}
+}
