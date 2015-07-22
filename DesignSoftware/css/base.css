@@ -1,0 +1,21 @@
+body 
+{
+	font-family: Monospace;
+	font-weight: bold;
+	background-color: #ccccff;
+	margin: 0px;
+	overflow: hidden;
+}
+
+header{
+	text-align: center;
+}
+
+.panel{
+	position: absolute;
+	z-index: 2;
+	top:75%;
+	left:3%;
+	width: 20%;
+	border:2px black dashed;
+}

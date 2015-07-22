@@ -18,22 +18,24 @@ function onDocumentMouseMove(event) {
 
     var intersects = raycaster.intersectObjects(objects);
 
-    if (intersects.length > 0) {
-        if (INTERSECTED != intersects[0].object) {
+    if (intersects.length > 0) { //If we hover over an object
 
-            INTERSECTED = intersects[0].object;
-            INTERSECTED.currentHex = INTERSECTED.material.color.getHex();
-            plane.position.copy(INTERSECTED.position);
+        if (INTERSECTED != intersects[0].object) { //If this object is different from my previous focus
+
+            INTERSECTED = intersects[0].object;//My current focus becomes this one
+            INTERSECTED.originalHex = INTERSECTED.material.color.getHex();//We save its previous color
+            plane.position.copy(INTERSECTED.position);//We move our plane
             //plane.lookAt(camera.position);
 
         }
-
         container.style.cursor = 'pointer';
 
     } else{
+    	if(INTERSECTED)
+    		INTERSECTED.material.color.setHex(INTERSECTED.originalHex);
+    	INTERSECTED = null;
     	container.style.cursor = 'auto';
     }
-
 }
 
 function onDocumentMouseDown(event) {
@@ -44,15 +46,12 @@ function onDocumentMouseDown(event) {
     var intersects = raycaster.intersectObjects(objects);
     switch ( event.button ) {
     case 0: // left 
-    if (intersects.length > 0) {
+    if (intersects.length > 0) {//If you have hover over an object and click on it
 
         controls.enabled = false;
-        SELECTED = intersects[0].object;
+        SELECTED = intersects[0].object; //SELECTED becomes this object
 
-                //Switch to another object, set the old color to the old object
-        if(INTERSECTED){
-        	currentMesh.material.color.setHex(INTERSECTED.currentHex);
-        }
+
 
     	// restore previous intersection object (if it exists) to its original color
 		if ( SELECTED ) 
@@ -83,8 +82,7 @@ function onDocumentMouseDown(event) {
     case 2: // right
     if(INTERSECTED){
     	document.getElementById('info').innerHTML = "deselection";
-	    INTERSECTED.material.color.setHex( INTERSECTED.currentHex );
-	    INTERSECTED = null;	
+    	SELECTED =null;
 	    //currentMesh = null;
 	}
 	controls.enabled = true;
@@ -101,8 +99,8 @@ function onDocumentMouseUp(event) {
     controls.enabled = true;
 
     if(INTERSECTED){
-		currentMesh.position.x = Math.floor(currentMesh.position.x/50)*50+25;
-		currentMesh.position.z = Math.floor(currentMesh.position.z/50)*50+25;
+		currentMesh.position.x = Math.floor(currentMesh.position.x/25)*25;
+		currentMesh.position.z = Math.floor(currentMesh.position.z/25)*25;
 		reajustPosition(currentMesh);
     }
     

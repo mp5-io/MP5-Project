@@ -58,8 +58,6 @@ function createShape(type, size, x, z){
 	
 	myMesh.position.set(x,myMesh.floorOffset,z);
 
-	myMesh.axes = new THREE.AxisHelper(70);
-	myMesh.axes.position = myMesh.position;
 
 	myMesh.material.color.setRGB( Math.random(),Math.random(), Math.random());
 
@@ -133,4 +131,8 @@ function onWindowResize() {
 function animate() {
     requestAnimationFrame( animate );
 	render();	
+}
+
+function updateAxes(mesh){
+	mesh.axes.position.set(mesh.position.x,mesh.position.y,mesh.position.z);
 }

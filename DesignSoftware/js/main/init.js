@@ -1,38 +1,3 @@
-console.log("init.js amorced")
-    // MAIN
-    // standard global variables
-var container, stats;
-var camera, controls, scene, renderer;
-var objects = [],
-    plane;
-var workingZone;
-
-var GRIDSIZE = 5000;
-var limitScale;
-
-var raycaster = new THREE.Raycaster();
-var mouse = new THREE.Vector2(),
-    offset = new THREE.Vector3(),
-    INTERSECTED, SELECTED;
-
-var clock = new THREE.Clock();
-
-// Basic wireframe materials.
-var darkMaterial = new THREE.MeshBasicMaterial( { color: 0x000088 } );
-var wireframeMaterial = new THREE.MeshBasicMaterial( { color: 0x00ee00, wireframe: true, transparent: true } ); 
-var multiMaterial = [ darkMaterial, wireframeMaterial ]; 
-
-var gui = new dat.GUI();
-var gui2 = new dat.GUI();
-var currentMesh;
-console.log("global variables ok")
-
-
-init();
-console.log("init done");
-animate();
-
-
 function init() {
 
 	scene = new THREE.Scene();
@@ -84,15 +49,10 @@ function init() {
 	console.log("grid ok");
 
 	//MAIN GRID
-	workingZone = new THREE.Mesh(new THREE.PlaneGeometry(1000,1000), new THREE.MeshBasicMaterial( {color: 0xAFEEEE, opacity:0.1}));
+	workingZone = new THREE.Mesh(new THREE.PlaneBufferGeometry(1000,1000), new THREE.MeshBasicMaterial( {color: 0xAFEEEE, opacity:0.1}));
 	workingZone.rotation.x = -Math.PI/2;
 		workingZone.position.y =-1;
 	scene.add(workingZone);
-
-	createShape("cube",50,25,25);
-	createShape("sphere",50,100,200);
-	createShape("cylinder",50,-100,200);
-	currentMesh = objects[0];
 	
     plane = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(5000, 5000),
@@ -149,6 +109,13 @@ function init() {
     initGuiShape();
     console.log("gui interface ok");
 
-
+    generateBasicEnvironment();
 }
 
+
+function generateBasicEnvironment(){
+	createShape("cube",50,25,25);
+	createShape("sphere",50,100,200);
+	createShape("cylinder",50,-100,200);
+	currentMesh = objects[0];
+}

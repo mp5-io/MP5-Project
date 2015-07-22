@@ -1,17 +1,15 @@
 function initGui(){
 	parameters = 
 	{
-		selected_mesh : currentMesh.name,
+		selected_mesh : "",
 		scaleX:1, scaleY:1, scaleZ:1, scaleUniform:1,
 		xPos: 0, yPos: 30, zPos: 0,
 		rotationX:0, rotationY:0,rotationZ:0,
 		color: "#ff0000", // color (change "#" to "0x")
 		opacity: 1, 
 		visible: true,
-		axes:true,
 		material: "Phong",
 		wireframe:false,
-
 		reset: function() { resetCube() }
 	};
 
@@ -32,8 +30,7 @@ function initGui(){
 	f2.open();
 	
 	var f1 = gui.addFolder('Scale');
-	//We fix a maximum scale : currentSize*scale <= sizeFloor
-	limitScale = GRIDSIZE/currentMesh.Size;
+
 	f1.add(parameters, 'scaleX', 1, 10,1).onChange( function(value) { 
        currentMesh.scale.x = value;
     });
@@ -64,7 +61,8 @@ function initGui(){
 
 	var cubeColor = gui.addColor( parameters, 'color' ).name('Color').listen();
 	cubeColor.onChange(function(value) // onFinishChange
-	{   currentMesh.material.color.setHex( value.replace("#", "0x") );  
+	{   currentMesh.material.color.setHex( value.replace("#", "0x") );
+		currentMesh.currentHex = currentMesh.material.color.getHex();  
 	});
 	
 	var cubeOpacity = gui.add( parameters, 'opacity' ).min(0).max(1).step(0.01).name('Opacity').listen();
@@ -78,9 +76,6 @@ function initGui(){
 		currentMesh.axes.visible = value;
 	});
 	
-	var cubeAxes= gui.add(parameters, 'axes').name('Axes?').listen();
-	cubeAxes.onChange(function(value) 
-	{   currentMesh.axes.visible = value; 	});
 
 	gui.add(parameters,'wireframe').name("Wireframe?").onChange( function(value){
 		currentMesh.material.wireframe = value;
@@ -145,7 +140,6 @@ function updateCube(currentMesh){
 	currentMesh.material.opacity = parameters.opacity;  
 	currentMesh.material.transparent = true;
 	currentMesh.visible = parameters.visible;
-	currentMesh.axes.visible = parameters.axes;
 	setLimit(currentMesh);
 	reajustPosition(currentMesh);
 }
@@ -164,7 +158,6 @@ function resetCube(){
 	parameters.color = "#ff0000";
 	parameters.opacity = 1;
 	parameters.visible = true;
-	parameters.axes = true;
 	parameters.material = "Phong";
 	parameters.wireframe = false;
 	currentMesh.position.set(0,0,0);
